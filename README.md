@@ -26,8 +26,53 @@ spring.datasource.password=
 spring.jpa.hibernate.ddl-auto=update
 ```
 
+## Oracle Database + HikaryCP Configuration
+* Download and add `ojdbc` according to database version `https://www.oracle.com/database/technologies/faq-jdbc.html`
+```
+mvn install:install-file -Dfile=path/to/your/ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.4 -Dpackaging=jar
+```
+* Edit `pom.xml` and add following dependency
+```
+<!--Oracle OJDBC -->
+<dependency>
+    <groupId>com.oracle</groupId>
+    <artifactId>ojdbc6</artifactId>
+    <version>11.2.0.2.0</version>
+</dependency>
+
+<!-- HikariCP connection pool -->
+<dependency>
+    <groupId>com.zaxxer</groupId>
+    <artifactId>HikariCP</artifactId>
+</dependency>
+```
+* Create Oracle Schema `springdb` with password `root` and add the credentials to `/resources/application.properties` The default ones are :
+```
+# Oracle settings
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
+spring.datasource.username=springdb
+spring.datasource.password=root
+
+# HikariCP settings
+spring.datasource.hikari.connection-timeout=60000
+spring.datasource.hikari.maximum-pool-size=5
+```
+
+## Spring Boot Dev Tools
+Add Spring Boot Dev Tools dependency to make development process easy. Developer does not have to restart after making changes
+```
+<!-- DevTool -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-devtools</artifactId>
+</dependency>
+```
+
+## Change Default Port 
+Go to `/resources/application.properties` and add following line `server.port:80`
+
 ## Usage 
-Run the project through the IDE and head out to [http://localhost:8080](http://localhost:8080)
+Run the project through the IDE and head out to [http://localhost/](http://localhost/)
 
 or 
 
